@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.schoollife.dao.UserDao">
+	<resultMap type="com.my.schoollife.bean.User" id="userMap">
+		<id 	 column="id"                        jdbcType="BIGINT"        property="id" />
+        <result  column="user_no"                jdbcType="VARCHAR"       property="userNo"/>
+        <result  column="user_name"                jdbcType="VARCHAR"       property="userName"/>
+        <result  column="user_psd"                jdbcType="VARCHAR"       property="userPsd"/>
+        <result  column="head_url"                jdbcType="VARCHAR"       property="headUrl"/>
+        <result  column="last_login_time"      jdbcType="TIMESTAMP"       property="lastLoginTime"/>
+        <result  column="create_time"      jdbcType="TIMESTAMP"       property="createTime"/>
+        <result  column="update_time"      jdbcType="TIMESTAMP"       property="updateTime"/>
+        <result  column="remark"                jdbcType="VARCHAR"       property="remark"/>
+        
+        <result  column="name"                jdbcType="VARCHAR"       property="name"/>
+        <result  column="sex"                jdbcType="VARCHAR"       property="sex"/>
+        <result  column="age"                jdbcType="VARCHAR"       property="age"/>
+        <result  column="email"                jdbcType="VARCHAR"       property="email"/>
+        <result  column="address"                jdbcType="VARCHAR"       property="address"/>
+        <result  column="phone"                jdbcType="VARCHAR"       property="phone"/>
+        
+	</resultMap>
+	<insert id="insertUser" parameterType="com.my.schoollife.bean.User">
+		insert into t_user(user_no,user_name,user_psd,head_url,
+		last_login_time,create_time,update_time,remark)
+		values(#{userNo},#{userName},#{userPsd},#{headUrl},
+		#{lastLoginTime},now(),now(),#{remark})
+	</insert>
+	
+	<select id="getUserByCondition" parameterType="com.my.schoollife.bean.User" resultMap="userMap">
+		select * from t_user
+		<include refid="sqlWhere"/>
+	</select>
+	
+	<update id="updateUserByCondition" parameterType="com.my.schoollife.bean.User">
+		update t_user
+		<include refid="updateSet"/>
+	</update>
+	
+	<delete id="deleteUserByUserNo" parameterType="com.my.schoollife.bean.User">
+		delete from t_user
+		where user_no = #{userNo}
+	</delete>
+	
+	<sql id="sqlWhere">
+		where
+		1=1
+		<if test="userNo != '' and userNo != null ">
+			and user_no = #{userNo}
+		</if>
+		<if test="userName !='' and userName != null ">
+			and user_name = #{userName}
+		</if>
+		<if test="userPsd !='' and userPsd !=null ">
+			and user_psd = #{userPsd}
+		</if>
+		<if test="headUrl !='' and headUrl !=null ">
+			and head_url = #{headUrl}
+		</if>
+		<if test="lastLoginTime !='' and lastLoginTime !=null ">
+			and date_format(last_login_time,'%Y-%m-%d') =
+			date_format(#{lastLoginTime},'%Y-%m-%d')
+		</if>
+		<if test="createTime !='' and createTime !=null ">
+			and date_format(create_time,'%Y-%m-%d') =
+			date_format(#{createTime},'%Y-%m-%d')
+		</if>
+		<if test="updateTime !='' and updateTime !=null ">
+			and date_format(update_time,'%Y-%m-%d') =
+			date_format(#{updateTime},'%Y-%m-%d')
+		</if>
+		<if test="remark !='' and remark !=null ">
+			and remark = #{remark}
+		</if>
+	</sql>
+	
+	<sql id="updateSet">
+		set
+        <if test="name !='' and name != null ">
+			  name = #{name},
+		</if>
+		<if test="sex !='' and sex != null ">
+			  sex = #{sex},
+		</if>
+		<if test="age !='' and age != null ">
+			  age = #{age},
+		</if>
+		<if test="email !='' and email != null ">
+			  email = #{email},
+		</if>
+		<if test="address !='' and address != null ">
+			  address = #{address},
+		</if>
+		<if test="phone !='' and phone != null ">
+			  phone = #{phone},
+		</if>
+		<if test="userName !='' and userName != null ">
+			  user_name = #{userName},
+		</if>
+		<if test="userPsd !='' and userPsd !=null ">
+			 user_psd = #{userPsd},
+		</if>
+		<if test="headUrl !='' and headUrl !=null ">
+			 head_url = #{headUrl},
+		</if>
+		<if test="lastLoginTime !='' and lastLoginTime !=null ">
+			last_login_time = #{lastLoginTime}
+		</if>
+		<if test="userNo !='' and userNo !=null ">
+			user_no = #{userNo},
+		</if>
+		update_time = now() 
+		where user_no = #{userNo}
+	</sql>	
+</mapper>

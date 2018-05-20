@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.schoollife.dao.MessageDao">
+	<resultMap type="com.my.schoollife.bean.Message" id="msgMap">
+		<id 	 column="id"                        jdbcType="BIGINT"        property="id" />
+        <result  column="record_no"                jdbcType="VARCHAR"       property="recordNo"/>
+        <result  column="user_no"                jdbcType="VARCHAR"       property="userNo"/>
+        <result  column="receive_type"                jdbcType="VARCHAR"       property="receiveType"/>
+        <result  column="receive_no"                jdbcType="VARCHAR"       property="receiveNo"/>
+        <result  column="create_time"      jdbcType="TIMESTAMP"       property="createTime"/>
+        <result  column="remark"                jdbcType="VARCHAR"       property="remark"/>
+        <result  column="name"                jdbcType="VARCHAR"       property="name"/>
+        <result  column="content"                jdbcType="VARCHAR"       property="content"/>
+	</resultMap>
+	<insert id="insertMessage" parameterType="com.my.schoollife.bean.Message">
+		insert into t_message(user_no,record_no,receive_type,receive_no,
+		create_time,content,remark,name)
+		values(#{userNo},#{recordNo},#{receiveType},#{receiveNo},
+		now(),#{content},#{remark},#{name})
+	</insert>
+	
+	<select id="getAllMessage" parameterType="com.my.schoollife.bean.Message" resultMap="msgMap">
+		select * from t_message
+	</select>
+	
+<!-- 	<sql id="sqlWhere">
+		where
+		1=1
+		<if test="userNo != '' and userNo != null ">
+			and user_no = #{userNo}
+		</if>
+		<if test="userName !='' and userName != null ">
+			and user_name = #{userName}
+		</if>
+		<if test="userPsd !='' and userPsd !=null ">
+			and user_psd = #{userPsd}
+		</if>
+		<if test="headUrl !='' and headUrl !=null ">
+			and head_url = #{headUrl}
+		</if>
+		<if test="lastLoginTime !='' and lastLoginTime !=null ">
+			and date_format(last_login_time,'%Y-%m-%d') =
+			date_format(#{lastLoginTime},'%Y-%m-%d')
+		</if>
+		<if test="createTime !='' and createTime !=null ">
+			and date_format(create_time,'%Y-%m-%d') =
+			date_format(#{createTime},'%Y-%m-%d')
+		</if>
+		<if test="updateTime !='' and updateTime !=null ">
+			and date_format(update_time,'%Y-%m-%d') =
+			date_format(#{updateTime},'%Y-%m-%d')
+		</if>
+		<if test="remark !='' and remark !=null ">
+			and remark = #{remark}
+		</if>
+	</sql>
+	
+	<sql id="updateSet">
+		set
+        <if test="name !='' and name != null ">
+			  name = #{name},
+		</if>
+		<if test="sex !='' and sex != null ">
+			  sex = #{sex},
+		</if>
+		<if test="age !='' and age != null ">
+			  age = #{age},
+		</if>
+		<if test="email !='' and email != null ">
+			  email = #{email},
+		</if>
+		<if test="address !='' and address != null ">
+			  address = #{address},
+		</if>
+		<if test="phone !='' and phone != null ">
+			  phone = #{phone},
+		</if>
+		<if test="userName !='' and userName != null ">
+			  user_name = #{userName},
+		</if>
+		<if test="userPsd !='' and userPsd !=null ">
+			 user_psd = #{userPsd},
+		</if>
+		<if test="headUrl !='' and headUrl !=null ">
+			 head_url = #{headUrl},
+		</if>
+		<if test="userNo !='' and userNo !=null ">
+			user_no = #{userNo},
+		</if>
+		update_time = now() 
+		where user_no = #{userNo}
+	</sql>	 -->
+</mapper>

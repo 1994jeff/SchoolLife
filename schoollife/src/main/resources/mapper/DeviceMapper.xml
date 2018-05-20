@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.schoollife.dao.DeviceDao">
+	<resultMap type="com.my.schoollife.bean.Book" id="deviceMap">
+		<id 	 column="id"                        jdbcType="BIGINT"        property="id" />
+        <result  column="book_no"                jdbcType="VARCHAR"       property="bookNo"/>
+        <result  column="device_name"                jdbcType="VARCHAR"       property="deviceName"/>
+        <result  column="device_status"                jdbcType="VARCHAR"       property="deviceStatus"/>
+        <result  column="device_flag"                jdbcType="VARCHAR"       property="deviceFlag"/>
+        <result  column="create_time"      jdbcType="TIMESTAMP"       property="createTime"/>
+        <result  column="user_no"                jdbcType="VARCHAR"       property="userNo"/>
+        <result  column="remark"                jdbcType="VARCHAR"       property="remark"/>
+        
+	</resultMap>
+	<insert id="insertBook" parameterType="com.my.schoollife.bean.Book">
+		insert into t_book(book_no,device_name,device_status,device_flag,
+		create_time,user_no,remark)
+		values(#{bookNo},#{deviceName},#{deviceStatus},#{deviceFlag},
+		now(),#{userNo},#{remark})
+	</insert>
+	
+	<select id="getBookByCondition" parameterType="com.my.schoollife.bean.Book" resultType="com.my.schoollife.bean.DeviceInfo">
+		select t_book.device_name as deviceName,t_book.device_status as deviceStatus,t_book.device_flag as deviceFlag,
+		t_book.create_time as createTime,t_user.user_name as userName,
+		t_user.user_no as userNo,t_user.name as name,t_user.phone as phone,
+		t_user.head_url as headUrl 
+		from t_book left join t_user
+		on t_book.user_no = t_user.user_no
+		<include refid="sqlWhere"/>
+	</select>
+	
+	<update id="updateBookByCondition" parameterType="com.my.schoollife.bean.Book">
+		update t_book
+		<include refid="updateSet"/>
+	</update>
+	
+	<delete id="deleteBook" parameterType="com.my.schoollife.bean.Book">
+		delete from t_book
+		where user_no = #{userNo}
+	</delete>
+	
+	<sql id="sqlWhere">
+		where
+		1=1
+		<if test="bookNo != '' and bookNo != null ">
+			and t_book.book_no = #{bookNo}
+		</if>
+		<if test="deviceName !='' and deviceName != null ">
+			and t_book.device_name = #{deviceName}
+		</if>
+		<if test="deviceStatus !='' and deviceStatus !=null ">
+			and t_book.device_status = #{deviceStatus}
+		</if>
+		<if test="deviceFlag !='' and deviceFlag !=null ">
+			and t_book.device_flag = #{deviceFlag}
+		</if>
+		<if test="userNo !='' and userNo !=null ">
+			and t_book.user_no = #{userNo}
+		</if>
+		<if test="remark !='' and remark !=null ">
+			and t_book.remark = #{remark}
+		</if>
+	</sql>
+	
+	<sql id="updateSet">
+		set
+        <if test="userNo != '' and userNo != null ">
+			 user_no = #{userNo},
+		</if>
+		<if test="deviceName !='' and deviceName != null ">
+			 device_name = #{deviceName},
+		</if>
+		<if test="deviceStatus !='' and deviceStatus !=null ">
+			 device_status = #{deviceStatus},
+		</if>
+		<if test="deviceFlag !='' and deviceFlag !=null ">
+			 device_flag = #{deviceFlag},
+		</if>
+		<if test="bookNo !='' and bookNo !=null ">
+			book_no = #{bookNo},
+		</if>
+		update_time = now() 
+		where book_no = #{bookNo}
+	</sql>	
+</mapper>
