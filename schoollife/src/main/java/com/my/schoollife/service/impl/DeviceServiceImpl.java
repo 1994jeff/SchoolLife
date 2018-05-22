@@ -89,9 +89,14 @@ public class DeviceServiceImpl implements DeviceService{
 	public void deleteBook(Book book) throws Exception {
 		try {
 			if(book==null || TextUtil.isEmpty(book.getDeviceName())) {
-				throw new Exception("请传入设备编号信息！");
+				throw new Exception("请传入设备名！");
 			}
-			deviceDao.deleteBook(book);
+			List<Book> list = deviceDao.getBookByCondition(book);
+			if(list!=null && list.size()>0) {
+				deviceDao.deleteBook(book);	
+			}else {
+				throw new Exception("设备【"+book.getDeviceName()+"】不存在");
+			}
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}

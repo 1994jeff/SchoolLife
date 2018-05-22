@@ -36,7 +36,7 @@
 	
 	<delete id="deleteBook" parameterType="com.my.schoollife.bean.Book">
 		delete from t_book
-		where user_no = #{userNo}
+		where device_name = #{deviceName}
 	</delete>
 	
 	<sql id="sqlWhere">
