@@ -8,10 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.my.schoollife.bean.Message;
-
-import net.sf.json.JSONObject;
 
 public class TcpClient implements Runnable{
 
@@ -41,7 +38,12 @@ public class TcpClient implements Runnable{
 						e.printStackTrace();
 					}
 				}
+				sendExit("exit");
 				closeConnect();
+			}
+
+			private void sendExit(String string) {
+				out.println(string);
 			}
 
 			private void closeConnect() {
