@@ -27,7 +27,6 @@ import net.sf.json.JSONObject;
  * tcp服务器
  * 管理客户端发起的连接
  */
-@Component("tcpServer")
 public class TcpServer {
 
 	private static final int PORT = 8888;  

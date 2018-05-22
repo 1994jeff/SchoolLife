@@ -13,8 +13,8 @@ import com.my.schoollife.bean.Message;
 
 public class TcpClient implements Runnable{
 
-//	private static final String HOST = "139.199.182.22";//服务器地址  
-	private static final String HOST = "127.0.0.1";//服务器地址  
+	private static final String HOST = "139.199.182.22";//服务器地址  
+//	private static final String HOST = "127.0.0.1";//服务器地址  
     private static final int PORT = 8888;//连接端口号  
     private static volatile Socket socket = null;  
     private BufferedReader in = null;  
