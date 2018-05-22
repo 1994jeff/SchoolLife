@@ -8,11 +8,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.my.schoollife.bean.Message;
 
 public class TcpClient implements Runnable{
 
-	private static final String HOST = "139.199.182.22";//服务器地址  
+//	private static final String HOST = "139.199.182.22";//服务器地址  
+	private static final String HOST = "127.0.0.1";//服务器地址  
     private static final int PORT = 8888;//连接端口号  
     private static volatile Socket socket = null;  
     private BufferedReader in = null;  
@@ -38,12 +40,7 @@ public class TcpClient implements Runnable{
 						e.printStackTrace();
 					}
 				}
-				sendExit("exit");
 				closeConnect();
-			}
-
-			private void sendExit(String string) {
-				out.println(string);
 			}
 
 			private void closeConnect() {
@@ -73,9 +70,15 @@ public class TcpClient implements Runnable{
                             try {
 								if ((getLine = in.readLine()) != null) {//读取接收的信息  
 								    getLine += "\n";  
-								    Gson gson = new Gson();
-								    Message msg = gson.fromJson(getLine, Message.class);
-								    System.out.println(msg.getName()+"说："+msg.getContent());
+								    Message msg = null;
+									try {
+										Gson gson = new Gson();
+										System.out.println("原始消息:"+getLine);
+										msg = gson.fromJson(getLine, Message.class);
+									    System.out.println(msg.getName()+"说："+msg.getContent());
+									} catch (JsonSyntaxException e) {
+										System.out.println(getLine);
+									}
 								} else {  
   
 								}

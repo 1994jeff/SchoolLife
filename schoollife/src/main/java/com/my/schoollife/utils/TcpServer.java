@@ -39,20 +39,20 @@ public class TcpServer {
     MessageService messageService;
     
     public static void main(String[] args) {
-    	new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while(true) {
-					try {
-						Thread.sleep(2000);
-						System.out.println(mClientList.size());
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-
-				}
-			}
-		}).start();
+//    	new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				while(true) {
+//					try {
+//						Thread.sleep(2000);
+//						System.out.println(mClientList.size());
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+//
+//				}
+//			}
+//		}).start();
     	new TcpServer();
     }
     
@@ -124,7 +124,6 @@ public class TcpServer {
                             if(saveIntoDataBase(message))
                             {
 //                                Message msg = initUserMsg(message);
-                            	System.out.println("打印:"+message);
                             	this.sendMessage(message);  
                             }else {
                                 Message msg = initSystemMsg(message);
@@ -134,7 +133,6 @@ public class TcpServer {
                     }
                 }  
             } catch (Exception e) {  
-                e.printStackTrace();  
             }  
         }
 
@@ -192,7 +190,6 @@ public class TcpServer {
          */  
   
         public void sendMessage(String msg) {  
-            System.out.println(msg);// 先在控制台输出  
             int count = mClientList.size();  
             // 遍历客户端集合  
             for (int i = 0; i < count; i++) {  
