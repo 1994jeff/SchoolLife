@@ -8,16 +8,19 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.my.schoollife.bean.Message;
 
 public class TcpClient implements Runnable{
 
-	private static final String HOST = "139.199.182.22";//服务器地址  
+//	private static final String HOST = "139.199.182.22";//服务器地址  
+	private static final String HOST = "127.0.0.1";//服务器地址  
     private static final int PORT = 8888;//连接端口号  
-    private static volatile Socket socket = null;  
+	private static volatile Socket socket = null;  
     private BufferedReader in = null;  
     private static volatile PrintWriter out = null;  
     public volatile static boolean inited = false;
+    private static boolean isClose = false;
     
 	public static void main(String[] args) {
 		TcpClient client = new TcpClient();
@@ -31,23 +34,28 @@ public class TcpClient implements Runnable{
 						if(socket!=null && socket.isConnected() && socket.isBound() && inited)
 						{
 							n++;
-							Thread.sleep(2000);
-							sendMsg("大家好，我是客户端4的第"+(n)+"条消息哦");
+							Thread.sleep(20);
+							sendMsg("大家好，我是客户端3的第"+(n)+"条消息哦");
 						}
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
-				sendExit("exit");
 				closeConnect();
-			}
-
-			private void sendExit(String string) {
-				out.println(string);
+				sendMsg("大家好，我是客户端4的第"+(n)+"条消息哦");
 			}
 
 			private void closeConnect() {
+				System.out.println("1");
 				out.println("exit");
+				try {
+					socket.shutdownInput();
+					socket.shutdownOutput();
+					socket.close();
+					isClose = true;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}).start();
 	}
@@ -64,8 +72,9 @@ public class TcpClient implements Runnable{
 	@Override
 	public void run() {
 		connect();
+		
 		while(true) {
-			while (true) {//死循环守护，监控服务器发来的消息  
+			while (true && !isClose) {//死循环守护，监控服务器发来的消息  
                 if (!socket.isClosed()) {//如果服务器没有关闭  
                     if (socket.isConnected()) {//连接正常  
                         if (!socket.isInputShutdown()) {//如果输入流没有断开  
@@ -73,9 +82,14 @@ public class TcpClient implements Runnable{
                             try {
 								if ((getLine = in.readLine()) != null) {//读取接收的信息  
 								    getLine += "\n";  
-								    Gson gson = new Gson();
-								    Message msg = gson.fromJson(getLine, Message.class);
-								    System.out.println(msg.getName()+"说："+msg.getContent());
+								    Message msg = null;
+									try {
+										Gson gson = new Gson();
+										msg = gson.fromJson(getLine, Message.class);
+									    System.out.println(msg.getName()+"说："+msg.getContent());
+									} catch (JsonSyntaxException e) {
+										System.out.println(getLine);
+									}
 								} else {  
   
 								}
