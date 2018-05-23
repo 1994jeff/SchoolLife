@@ -27,14 +27,13 @@ import net.sf.json.JSONObject;
  * tcp服务器
  * 管理客户端发起的连接
  */
-@Component("tcpServer")
 public class TcpServer {
 
 	private static final int PORT = 8888;  
     private volatile static List<Socket> mClientList = new ArrayList<Socket>();  
     private volatile ServerSocket server = null;  
     private ExecutorService mExecutors = null; // 线程池对象  
-    
+
     @Resource
     MessageService messageService;
     
@@ -44,7 +43,7 @@ public class TcpServer {
 			public void run() {
 				while(true) {
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(3000);
 						System.out.println(mClientList.size());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -86,7 +85,10 @@ public class TcpServer {
         private Socket socket;  
         private BufferedReader in = null;  
         private String message = "";  
-  
+        private long startConnectTime = 0l;
+//        private long allTime = 2*60*60*1000;
+        private long allTime = 1000;
+        
         public Service(Socket socket) {  
             this.socket = socket;  
             try {  
@@ -113,6 +115,7 @@ public class TcpServer {
         @Override  
         public void run() {  
             try {  
+            	startConnectTime = System.currentTimeMillis();
                 while (true) {  
                     if ((message = in.readLine()) != null) {  
                         // 当客户端发送的信息为：exit时，关闭连接  
@@ -124,17 +127,22 @@ public class TcpServer {
                             if(saveIntoDataBase(message))
                             {
 //                                Message msg = initUserMsg(message);
-                            	System.out.println("打印:"+message);
                             	this.sendMessage(message);  
                             }else {
                                 Message msg = initSystemMsg(message);
                             	this.sendMessage(JSONObject.fromObject(msg).toString(),socket);
                             }
                         }  
+                    }else {
+                    	System.out.println("暂无消息");
+                    	long time = System.currentTimeMillis() - startConnectTime;
+                    	if(time>allTime) {
+                            closeSocket();  
+                            break;
+                    	}
                     }
                 }  
             } catch (Exception e) {  
-                e.printStackTrace();  
             }  
         }
 
@@ -180,8 +188,10 @@ public class TcpServer {
             mClientList.remove(socket);  
             in.close();  
             message = "主机:" + socket.getInetAddress() + "关闭连接\n目前在线:"  
-                    + mClientList.size();  
-            socket.close();  
+                    + mClientList.size();
+            socket.shutdownInput();
+            socket.shutdownOutput();
+            socket.close();
             this.sendMessage(message);  
         }  
   
@@ -192,7 +202,6 @@ public class TcpServer {
          */  
   
         public void sendMessage(String msg) {  
-            System.out.println(msg);// 先在控制台输出  
             int count = mClientList.size();  
             // 遍历客户端集合  
             for (int i = 0; i < count; i++) {  
