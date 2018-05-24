@@ -32,8 +32,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void updateUserByCondition(User user) throws Exception {
 		try {
-			if(user==null || TextUtil.isEmpty(user.getUserNo())) {
-				throw new Exception("用户编号不能为空！");
+			if(user==null || TextUtil.isEmpty(user.getUserName())) {
+				throw new Exception("用户名不能为空！");
 			}
 			userDao.updateUserByCondition(user);
 		} catch (Exception e) {

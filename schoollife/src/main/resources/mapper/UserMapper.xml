@@ -104,12 +104,9 @@
 			 head_url = #{headUrl},
 		</if>
 		<if test="lastLoginTime !='' and lastLoginTime !=null ">
-			last_login_time = #{lastLoginTime}
-		</if>
-		<if test="userNo !='' and userNo !=null ">
-			user_no = #{userNo},
+			last_login_time = #{lastLoginTime},
 		</if>
 		update_time = now() 
-		where user_no = #{userNo}
+		where user_name = #{userName}
 	</sql>	
 </mapper>

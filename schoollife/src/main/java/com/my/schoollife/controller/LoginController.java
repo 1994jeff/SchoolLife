@@ -1,11 +1,21 @@
 package com.my.schoollife.controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.apache.jasper.tagplugins.jstl.core.Url;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -13,8 +23,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.my.schoollife.bean.City;
 import com.my.schoollife.bean.RetParam;
 import com.my.schoollife.bean.User;
+import com.my.schoollife.service.CityService;
 import com.my.schoollife.service.UserService;
 import com.my.schoollife.utils.TextUtil;
 
@@ -31,9 +43,41 @@ public class LoginController extends BaseController {
 
 	@Resource
 	UserService userService;
+	@Resource
+	CityService cityService;
 	
 	@RequestMapping("/toIndex.do")
 	public String toIndex(HttpSession session,Model model){
+		
+		/*******************************/
+		
+		try {
+			URL url = session.getServletContext().getResource("fileupload/city.txt");
+			File file = new File(url.getPath());
+			if(file.exists()) {
+				log.debug("ok");
+				BufferedReader read = new BufferedReader(new FileReader(file));
+				String line = "";
+				try {
+					City city = new City();
+					while((line=read.readLine())!=null) {
+						city.setCity(line);
+						cityService.insertCity(city);
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else {
+				log.debug("not ok ");
+			}
+		} catch (MalformedURLException e1) {
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		/******************************/
+		
 		User user = getSessionUser(session);
 		log.debug("------------------------login jsp page------------------------");
 		if(null==user)
@@ -80,12 +124,13 @@ public class LoginController extends BaseController {
 			}
 			List<User> uList = userService.getUserByCondition(user);
 			if(null!=uList&&uList.size()==1){
+				Date date = new Date();
+				uList.get(0).setLastLoginTime(date);;
 				param.setRetMsg("登录成功");
 				param.setRetData(uList);
 				User u = new User();
-				u.setUserName(user.getUserName());
-				u.setUserPsd(user.getUserPsd());
-				u.setLastLoginTime(new Date());
+				u.setUserNo(uList.get(0).getUserNo());
+				u.setLastLoginTime(date);
 				userService.updateUserByCondition(u);
 				param.setRetCode("success");
 			}else{
