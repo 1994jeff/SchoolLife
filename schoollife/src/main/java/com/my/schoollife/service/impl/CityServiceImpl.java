@@ -1,5 +1,7 @@
 package com.my.schoollife.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -15,8 +17,31 @@ public class CityServiceImpl implements CityService {
 	CityDao cityDao;
 
 	@Override
-	public void insertCity(City city) {
-		cityDao.insertCity(city);
+	public void insertCity(City city) throws Exception {
+		try {
+			if(city==null||"".equals(city.getCity())) {
+				throw new Exception("城市名为空");
+			}
+			cityDao.insertCity(city);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+	}
+
+	@Override
+	public List<City> getAllCity() {
+		return cityDao.getCityByCondition(new City());
+	}
+
+	@Override
+	public List<City> getCityLike(City c) throws Exception {
+		List<City> list = null;
+		try {
+			list = cityDao.getCityLike(c);
+		} catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+		return list;
 	}
 
 }

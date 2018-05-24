@@ -14,8 +14,15 @@
 	</insert>
 	
 	<select id="getCityByCondition" parameterType="com.my.schoollife.bean.City" resultMap="cityMap">
-		select * from t_city
-		<include refid="sqlWhere"/>
+		 select * from t_city
+		 group by city order by convert(city USING gbk) COLLATE gbk_chinese_ci asc 
+	</select>
+	
+	<select id="getCityLike" parameterType="com.my.schoollife.bean.City" resultMap="cityMap">
+		select * from ( select * from t_city
+		 group by city 
+		 order by convert(city USING gbk) COLLATE gbk_chinese_ci asc )as citys
+		 where citys.city like '%${city}%'
 	</select>
 	
 	<sql id="sqlWhere">

@@ -48,35 +48,32 @@ public class LoginController extends BaseController {
 	
 	@RequestMapping("/toIndex.do")
 	public String toIndex(HttpSession session,Model model){
-		
-		/*******************************/
-		
-		try {
-			URL url = session.getServletContext().getResource("fileupload/city.txt");
-			File file = new File(url.getPath());
-			if(file.exists()) {
-				log.debug("ok");
-				BufferedReader read = new BufferedReader(new FileReader(file));
-				String line = "";
-				try {
-					City city = new City();
-					while((line=read.readLine())!=null) {
-						city.setCity(line);
-						cityService.insertCity(city);
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}else {
-				log.debug("not ok ");
-			}
-		} catch (MalformedURLException e1) {
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		/******************************/
+//		/*******************************/
+//		try {
+//			URL url = session.getServletContext().getResource("fileupload/city.txt");
+//			File file = new File(url.getPath());
+//			if(file.exists()) {
+//				log.debug("ok");
+//				BufferedReader read = new BufferedReader(new FileReader(file));
+//				String line = "";
+//				try {
+//					City city = new City();
+//					while((line=read.readLine())!=null) {
+//						city.setCity(line);
+//						cityService.insertCity(city);
+//					}
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}else {
+//				log.debug("not ok ");
+//			}
+//		} catch (MalformedURLException e1) {
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//		/******************************/
 		
 		User user = getSessionUser(session);
 		log.debug("------------------------login jsp page------------------------");
@@ -97,10 +94,48 @@ public class LoginController extends BaseController {
 		}
 		return "index";
 	}
+	
 	@RequestMapping("/toLogin.do")
 	public String toLogin(){
 		return "../../index";
 	}
+	
+	@RequestMapping("/getAllCity.do")
+	@ResponseBody
+	public String getAllCity(HttpSession session,String start,String limit){
+		RetParam<City> param = new RetParam<City>();
+		List<City> list = null;
+		try {
+			list = cityService.getAllCity();
+			param.setRetMsg("查询成功");
+			param.setRetCode(SUCCESS_CODE);
+			param.setRetData(list);
+		} catch (Exception e) {
+			param.setRetMsg(e.getMessage());
+			param.setRetCode(FAILED_CODE);
+		}
+		return JSONObject.fromObject(param,getJsonConfig()).toString();
+	}
+	
+	@RequestMapping("/getCityLike.do")
+	@ResponseBody
+	public String getCityLike(HttpSession session,String city){
+		RetParam<City> param = new RetParam<City>();
+		List<City> list = null;
+		try {
+			City c = new City();
+			c.setCity(city);
+			list = cityService.getCityLike(c);
+			param.setRetMsg("查询成功");
+			param.setRetCode(SUCCESS_CODE);
+			param.setRetData(list);
+		} catch (Exception e) {
+			param.setRetMsg(e.getMessage());
+			param.setRetCode(FAILED_CODE);
+		}
+		return JSONObject.fromObject(param,getJsonConfig()).toString();
+	}
+	
 	@RequestMapping("/toExit.do")
 	public String toExit(HttpSession session){
 		session.removeAttribute("user");

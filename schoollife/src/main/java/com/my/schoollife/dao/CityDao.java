@@ -9,4 +9,6 @@ public interface CityDao {
 	void insertCity(City city);
 	
 	List<City> getCityByCondition(City city);
+
+	List<City> getCityLike(City c);
 }
