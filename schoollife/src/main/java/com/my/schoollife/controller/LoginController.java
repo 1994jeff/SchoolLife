@@ -131,6 +131,7 @@ public class LoginController extends BaseController {
 				User u = new User();
 				u.setUserNo(uList.get(0).getUserNo());
 				u.setLastLoginTime(date);
+				u.setUserName(uList.get(0).getUserName());
 				userService.updateUserByCondition(u);
 				param.setRetCode("success");
 			}else{
