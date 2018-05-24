@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.schoollife.dao.CityDao">
+	<resultMap type="com.my.schoollife.bean.City" id="cityMap">
+		<id 	 column="id"                        jdbcType="BIGINT"        property="id" />
+        <result  column="no"                jdbcType="VARCHAR"       property="no"/>
+        <result  column="city"                jdbcType="VARCHAR"       property="city"/>
+        <result  column="remark"                jdbcType="VARCHAR"       property="remark"/>
+        
+	</resultMap>
+	<insert id="insertCity" parameterType="com.my.schoollife.bean.City">
+		insert into t_city(no,city)
+		values(#{no},#{city})
+	</insert>
+	
+	<select id="getCityByCondition" parameterType="com.my.schoollife.bean.City" resultMap="cityMap">
+		select * from t_city
+		<include refid="sqlWhere"/>
+	</select>
+	
+	<sql id="sqlWhere">
+		where
+		1=1
+		<if test="no != '' and no != null ">
+			and no = #{no}
+		</if>
+		<if test="city !='' and city != null ">
+			and city = #{city}
+		</if>
+	</sql>
+	
+</mapper>
