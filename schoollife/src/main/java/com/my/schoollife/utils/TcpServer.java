@@ -97,7 +97,7 @@ public class TcpServer {
                 // 客户端只要一连到服务器，便发送连接成功的信息  
                 message = "当前在线人数:" + mClientList.size()+"人";
                 Message msg = initSystemMsg(message);
-                this.sendMessage(JSON.toJSONString(msg));  
+//                this.sendMessage(JSON.toJSONString(msg));  
             } catch (IOException e) {  
                 e.printStackTrace();  
             }  
