@@ -27,4 +27,9 @@ public class CardServiceImpl implements CardService {
 		return cardDao.getCard();
 	}
 
+	@Override
+	public void updateCard(Card c) {
+		cardDao.updateCard(c);
+	}
+
 }

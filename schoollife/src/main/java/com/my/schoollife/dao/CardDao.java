@@ -11,4 +11,6 @@ public interface CardDao {
 
 	void insert(Card c);
 
+	void updateCard(Card c);
+
 }

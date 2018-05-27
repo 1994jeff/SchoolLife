@@ -15,10 +15,27 @@
 		values(#{cardNo},#{status},#{stuNo},#{money})
 	</insert>
 	
-	<select id="getCard" resultMap="com.my.schoollife.bean.CardDto">
-		select t.id as id,t.card_no as cardNo,t.status as status,t.stu_no as stuNo,t.money as money 
-		,(select t_student.name from t_student where t_student.stu_no=t.stu_no) as stuName 
-		from t_card t
+	<select id="getCard" resultType="com.my.schoollife.bean.CardDto">
+		select t.id as id,t.card_no as cardNo,t.status as status,t.stu_no as stuNo,t.money as money,u.name as stuName
+		from t_card t , t_student u where t.stu_no=u.stu_no
 	</select>
 	
+	<select id="updateCard" parameterType="com.my.schoollife.bean.Card">
+		update t_card
+		<include refid="updateSet"/>
+	</select>
+	
+	<sql id="updateSet">
+		set
+		<if test="status !='' and status !=null ">
+			status=#{status},
+		</if>
+		<if test="money !='' and money !=null ">
+			 money = #{money},
+		</if>
+		<if test="stuNo !='' and stuNo !=null ">
+			 stu_no = #{stuNo}
+		</if>
+		where card_no = #{cardNo}
+	</sql>	
 </mapper>

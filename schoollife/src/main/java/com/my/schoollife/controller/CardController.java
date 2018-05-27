@@ -54,4 +54,19 @@ public class CardController extends BaseController {
 		return JSONObject.fromObject(param,getJsonConfig()).toString();
 	}
 	
+	@RequestMapping("/updateCard.do")
+	@ResponseBody
+	public String updateCard(HttpSession session,Card c) {
+		RetParam<CardDto> param = new RetParam<>();
+		try {
+			cardService.updateCard(c);
+			param.setRetMsg("添加成功");
+			param.setRetCode(SUCCESS_CODE);
+		} catch (Exception e) {
+			param.setRetMsg(e.getMessage());
+			param.setRetCode(FAILED_CODE);
+		}
+		return JSONObject.fromObject(param,getJsonConfig()).toString();
+	}
+	
 }

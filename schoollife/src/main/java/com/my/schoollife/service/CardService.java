@@ -11,4 +11,6 @@ public interface CardService {
 
 	List<CardDto> getCard(Card c);
 
+	void updateCard(Card c);
+
 }
