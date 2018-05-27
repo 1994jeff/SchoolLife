@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.schoollife.dao.StudentDao">
+	<resultMap type="com.my.schoollife.bean.Student" id="studentMap">
+		<id 	 column="id"                        jdbcType="BIGINT"        property="id" />
+        <result  column="stu_no"                jdbcType="VARCHAR"       property="stuNo"/>
+        <result  column="name"                jdbcType="VARCHAR"       property="name"/>
+        <result  column="class_no"                jdbcType="VARCHAR"       property="classNo"/>
+        <result  column="age"                jdbcType="VARCHAR"       property="age"/>
+        
+	</resultMap>
+	<insert id="insert" parameterType="com.my.schoollife.bean.Student">
+		insert into t_student(card_no,status,stu_no,money)
+		values(#{cardNo},#{status},#{stuNo},#{money})
+	</insert>
+	
+	<select id="getStudent" resultMap="studentMap">
+		 select * from t_student
+	</select>
+	
+</mapper>

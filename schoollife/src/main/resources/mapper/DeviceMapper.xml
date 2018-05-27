@@ -65,9 +65,12 @@
 	<sql id="updateSet">
 		set
 		<if test="deviceStatus !='' and deviceStatus !=null ">
+			user_no=#{userNo},
+		</if>
+		<if test="deviceStatus !='' and deviceStatus !=null ">
 			 device_status = #{deviceStatus},
 		</if>
-		user_no=#{userNo}
+		device_name = #{deviceName}
 		where device_name = #{deviceName}
 	</sql>	
 </mapper>
