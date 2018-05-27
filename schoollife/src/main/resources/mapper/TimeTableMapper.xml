@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.schoollife.dao.TimeTableDao">
+	<resultMap type="com.my.schoollife.bean.Timetable" id="timeTableMap">
+		<id 	 column="id"                        jdbcType="BIGINT"        property="id" />
+        <result  column="no"                jdbcType="VARCHAR"       property="no"/>
+        <result  column="name"                jdbcType="VARCHAR"       property="name"/>
+        <result  column="grade"                jdbcType="VARCHAR"       property="grade"/>
+        
+	</resultMap>
+	<insert id="insert" parameterType="com.my.schoollife.bean.Timetable">
+		insert into t_timetable(no,name,grade)
+		values(#{no},#{name},#{grade})
+	</insert>
+	
+	<select id="getTimeTable" resultType="timeTableMap">
+		select * t_timetable 
+	</select>
+	
+	<!-- <select id="updateCard" parameterType="com.my.schoollife.bean.Card">
+		update t_card
+		<include refid="updateSet"/>
+	</select>
+	
+	<sql id="updateSet">
+		set
+		<if test="status !='' and status !=null ">
+			status=#{status},
+		</if>
+		<if test="money !='' and money !=null ">
+			 money = #{money},
+		</if>
+		<if test="stuNo !='' and stuNo !=null ">
+			 stu_no = #{stuNo}
+		</if>
+		where card_no = #{cardNo}
+	</sql>	 -->
+</mapper>
