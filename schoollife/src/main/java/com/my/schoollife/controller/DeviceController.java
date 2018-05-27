@@ -54,6 +54,7 @@ public class DeviceController extends BaseController {
 				Book bb = new Book();
 				bb.setDeviceStatus("book");
 				bb.setDeviceName(book.getDeviceName());
+				bb.setUserNo(book.getUserNo());
 				deviceService.updateBookByCondition(bb);
 				param.setRetMsg("成功");
 				param.setRetCode(SUCCESS_CODE);
@@ -83,6 +84,7 @@ public class DeviceController extends BaseController {
 			if(ba!=null && ba.size()>0) {
 				Book bb = new Book();
 				bb.setDeviceStatus("normal");
+				bb.setUserNo(book.getUserNo());
 				bb.setDeviceName(book.getDeviceName());
 				deviceService.updateBookByCondition(bb);
 				param.setRetMsg("成功");

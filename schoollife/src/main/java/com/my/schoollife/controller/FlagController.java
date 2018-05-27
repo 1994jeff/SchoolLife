@@ -27,9 +27,18 @@ public class FlagController extends BaseController {
 	public String addFlag(HttpSession session,String deviceFlag) {
 		RetParam<Flag> param = new RetParam<>();
 		try {
-			flagService.insert(deviceFlag);
-			param.setRetMsg("添加成功");
-			param.setRetCode(SUCCESS_CODE);
+			List<Flag> list = flagService.getFlag();
+			if(list!=null && list.size()>0) {
+				for(int i=0;i<list.size();i++) {
+					if(list.get(i).getDeviceFlag().equals(deviceFlag)) {
+						throw new Exception("分类已存在！");
+					};
+				}
+				flagService.insert(deviceFlag);
+				param.setRetMsg("添加成功");
+				param.setRetCode(SUCCESS_CODE);	
+			}
+			
 		} catch (Exception e) {
 			param.setRetMsg(e.getMessage());
 			param.setRetCode(FAILED_CODE);
