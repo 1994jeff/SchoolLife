@@ -13,7 +13,7 @@
 		values(#{no},#{name},#{grade})
 	</insert>
 	
-	<select id="getTimeTable" resultType="timeTableMap">
+	<select id="getTimeTable" resultMap="timeTableMap">
 		select * t_timetable 
 	</select>
 	
