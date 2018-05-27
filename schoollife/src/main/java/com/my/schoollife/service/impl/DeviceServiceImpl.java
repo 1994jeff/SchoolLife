@@ -24,18 +24,21 @@ public class DeviceServiceImpl implements DeviceService{
 			if(book==null) {
 				throw new Exception("请传入设备信息！");
 			}
-			if(TextUtil.isEmpty(book.getDeviceName())||TextUtil.isEmpty(book.getDeviceFlag()))
+			if(TextUtil.isEmpty(book.getDeviceName()) || TextUtil.isEmpty(book.getDeviceFlag()))
 			{
-				throw new Exception("请传入设备信息！");	
+				throw new Exception("请传入设备信息 deviceName deviceFlag！");	
 			}
-			List<Book> books = deviceDao.getBookByCondition(book);
+			Book bs = new Book();
+			bs.setDeviceName(book.getDeviceName());
+			List<Book> books = deviceDao.getBookByCondition(bs);
 			if(books!=null && books.size()>0) {
 				throw new Exception("设备【"+book.getDeviceName()+"】已存在");
+			}else {
+				String deviceNoPre = DomainNoUtils.getNoByPreStr(DomainNoUtils.BC_NO);
+				book.setBookNo(deviceNoPre);
+				book.setDeviceStatus("normal");
+				deviceDao.insertBook(book);
 			}
-			String deviceNoPre = DomainNoUtils.getNoByPreStr(DomainNoUtils.BC_NO);
-			book.setBookNo(deviceNoPre);
-			book.setDeviceStatus("normal");
-			deviceDao.insertBook(book);
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
@@ -44,31 +47,7 @@ public class DeviceServiceImpl implements DeviceService{
 	@Override
 	public void updateBookByCondition(Book book) throws Exception {
 		try {
-			if(book==null) {
-				throw new Exception("请传入设备信息！");
-			}
-			if(TextUtil.isEmpty(book.getDeviceName()))
-			{
-				throw new Exception("请传入设备名！");	
-			}
-			if(TextUtil.isEmpty(book.getUserNo()))
-			{
-				throw new Exception("请传入设备预约人编号信息！");	
-			}
-			if(TextUtil.isEmpty(book.getDeviceStatus()))
-			{
-				throw new Exception("请传入设备预约状态deviceStatus,normal/book,normal未预约，book预约");	
-			}
-			Book b = new Book();
-			b.setDeviceName(book.getDeviceName());
-			List<Book> list = deviceDao.getBookByCondition(book);
-			if(list!=null && list.size()>0)
-			{
-				deviceDao.updateBookByCondition(book);
-			}
-			else {
-				throw new Exception("设备【"+book.getDeviceName()+"】不存在");
-			}
+			deviceDao.updateBookByCondition(book);	
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}

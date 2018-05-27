@@ -64,22 +64,10 @@
 	
 	<sql id="updateSet">
 		set
-        <if test="userNo != '' and userNo != null ">
-			 user_no = #{userNo},
-		</if>
-		<if test="deviceName !='' and deviceName != null ">
-			 device_name = #{deviceName},
-		</if>
 		<if test="deviceStatus !='' and deviceStatus !=null ">
 			 device_status = #{deviceStatus},
 		</if>
-		<if test="deviceFlag !='' and deviceFlag !=null ">
-			 device_flag = #{deviceFlag},
-		</if>
-		<if test="bookNo !='' and bookNo !=null ">
-			book_no = #{bookNo},
-		</if>
-		update_time = now() 
-		where book_no = #{bookNo}
+		user_no=#{userNo}
+		where device_name = #{deviceName}
 	</sql>	
 </mapper>

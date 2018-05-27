@@ -23,7 +23,7 @@ public class MyServletContextListener implements ServletContextListener {
 	class TcpThread implements Runnable{
 		@Override
 		public void run() {
-			new TcpServer();
+//			new TcpServer();
 		}
 		
 	}

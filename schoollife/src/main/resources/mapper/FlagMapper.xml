@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.my.schoollife.dao.FlagDao">
+	<resultMap type="com.my.schoollife.bean.Flag" id="flagMap">
+		<id 	 column="id"                        jdbcType="BIGINT"        property="id" />
+        <result  column="device_flag"                jdbcType="VARCHAR"       property="deviceFlag"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.my.schoollife.bean.Flag">
+		insert into t_flag(device_flag)
+		values(#{deviceFlag})
+	</insert>
+	
+	<select id="getFlag" resultMap="flagMap">
+		select * from t_flag
+	</select>
+</mapper>

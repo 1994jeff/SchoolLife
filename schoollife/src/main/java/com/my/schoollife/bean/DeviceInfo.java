@@ -12,6 +12,14 @@ public class DeviceInfo extends Book implements Serializable{
 	private String name;
 	private String phone;
 	private String headUrl;
+	private String userName;
+	
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public String getName() {
 		return name;
 	}
