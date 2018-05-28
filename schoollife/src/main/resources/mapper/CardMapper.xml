@@ -16,8 +16,11 @@
 	</insert>
 	
 	<select id="getCard" resultType="com.my.schoollife.bean.CardDto">
-		select t.id as id,t.card_no as cardNo,t.status as status,t.stu_no as stuNo,t.money as money,u.name as stuName
+		select t.id as id,t.card_no as cardNo,t.status as status,t.stu_no as stuNo,t.money as money,t.lost_date as lostDate,u.name as stuName
 		from t_card t , t_student u where t.stu_no=u.stu_no
+		<if test="cardNo != '' and cardNo != null ">
+			and card_no = #{cardNo}
+		</if>
 	</select>
 	
 	<select id="updateCard" parameterType="com.my.schoollife.bean.Card">
