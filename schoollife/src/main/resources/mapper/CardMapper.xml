@@ -30,6 +30,7 @@
 	
 	<sql id="updateSet">
 		set
+		1=1,
 		<if test="status !='' and status !=null ">
 			status=#{status},
 		</if>
@@ -37,7 +38,13 @@
 			 money = #{money},
 		</if>
 		<if test="stuNo !='' and stuNo !=null ">
-			 stu_no = #{stuNo}
+			 stu_no = #{stuNo},
+		</if>
+		<if test="lostDate !='' and lostDate !=null ">
+			 lost_date = #{lostDate},
+		</if>
+		<if test="cardNo !='' and cardNo !=null ">
+			 card_no = #{cardNo}
 		</if>
 		where card_no = #{cardNo}
 	</sql>	
