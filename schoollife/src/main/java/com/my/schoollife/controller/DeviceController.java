@@ -136,7 +136,7 @@ public class DeviceController extends BaseController {
 		RetParam<Book> param = new RetParam<>();
 		try {
 			if(TextUtil.isEmpty(book.getUserNo())||TextUtil.isEmpty(book.getDeviceName())) {
-				throw new Exception("UserNo or DeviceName is null");
+				throw new Exception("DeviceName is null");
 			}
 			deviceService.deleteBook(book);
 			param.setRetCode(SUCCESS_CODE);

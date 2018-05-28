@@ -70,9 +70,11 @@ public class DeviceServiceImpl implements DeviceService{
 			if(book==null || TextUtil.isEmpty(book.getDeviceName())) {
 				throw new Exception("请传入设备名！");
 			}
-			List<Book> list = deviceDao.getBookByCondition(book);
+			Book bb = new Book();
+			bb.setDeviceName(book.getDeviceName());
+			List<Book> list = deviceDao.getBookByCondition(bb);
 			if(list!=null && list.size()>0) {
-				deviceDao.deleteBook(book);	
+				deviceDao.deleteBook(bb);	
 			}else {
 				throw new Exception("设备【"+book.getDeviceName()+"】不存在");
 			}
