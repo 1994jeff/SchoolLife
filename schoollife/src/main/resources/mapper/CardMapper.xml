@@ -30,17 +30,19 @@
 	
 	<sql id="updateSet">
 		set
-		<if test="status !='' and status !=null ">
+		<if test="status == 1 ">
 			status=#{status},
+			lost_date = now(),
+		</if>
+		<if test="status == 2 ">
+			status=#{status},
+			lost_date = null,
 		</if>
 		<if test="money !='' and money !=null ">
 			money = #{money},
 		</if>
 		<if test="stuNo !='' and stuNo !=null ">
 			stu_no = #{stuNo},
-		</if>
-		<if test="lostDate !='' and lostDate !=null ">
-			lost_date = #{lostDate},
 		</if>
 		<if test="cardNo !='' and cardNo !=null ">
 			card_no = #{cardNo}
