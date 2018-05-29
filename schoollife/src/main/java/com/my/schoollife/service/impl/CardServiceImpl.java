@@ -24,7 +24,7 @@ public class CardServiceImpl implements CardService {
 
 	@Override
 	public List<CardDto> getCard(Card c) {
-		return cardDao.getCard();
+		return cardDao.getCard(c);
 	}
 
 	@Override

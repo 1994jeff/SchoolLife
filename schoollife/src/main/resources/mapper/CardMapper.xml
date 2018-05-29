@@ -15,7 +15,7 @@
 		values(#{cardNo},#{status},#{stuNo},#{money})
 	</insert>
 	
-	<select id="getCard" resultType="com.my.schoollife.bean.CardDto">
+	<select id="getCard" resultType="com.my.schoollife.bean.CardDto" parameterType="com.my.schoollife.bean.Card">
 		select t.id as id,t.card_no as cardNo,t.status as status,t.stu_no as stuNo,t.money as money,t.lost_date as lostDate,u.name as stuName
 		from t_card t , t_student u where t.stu_no=u.stu_no
 		<if test="cardNo != '' and cardNo != null ">
@@ -30,21 +30,20 @@
 	
 	<sql id="updateSet">
 		set
-		1=1,
 		<if test="status !='' and status !=null ">
 			status=#{status},
 		</if>
 		<if test="money !='' and money !=null ">
-			 money = #{money},
+			money = #{money},
 		</if>
 		<if test="stuNo !='' and stuNo !=null ">
-			 stu_no = #{stuNo},
+			stu_no = #{stuNo},
 		</if>
 		<if test="lostDate !='' and lostDate !=null ">
-			 lost_date = #{lostDate},
+			lost_date = #{lostDate},
 		</if>
 		<if test="cardNo !='' and cardNo !=null ">
-			 card_no = #{cardNo}
+			card_no = #{cardNo}
 		</if>
 		where card_no = #{cardNo}
 	</sql>	

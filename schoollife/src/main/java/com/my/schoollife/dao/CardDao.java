@@ -7,10 +7,10 @@ import com.my.schoollife.bean.CardDto;
 
 public interface CardDao {
 
-	List<CardDto> getCard();
-
 	void insert(Card c);
 
 	void updateCard(Card c);
+
+	List<CardDto> getCard(Card c);
 
 }
