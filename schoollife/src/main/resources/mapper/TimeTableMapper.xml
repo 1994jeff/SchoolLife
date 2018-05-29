@@ -14,7 +14,7 @@
 	</insert>
 	
 	<select id="getTimeTable" resultMap="timeTableMap">
-		select * t_timetable 
+		select * from t_timetable 
 	</select>
 	
 	<!-- <select id="updateCard" parameterType="com.my.schoollife.bean.Card">
